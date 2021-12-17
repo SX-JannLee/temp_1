@@ -1,0 +1,47 @@
+<widget id="A6048475134003" version="1.0.1">
+
+	<name>NFC安防巡查</name>
+
+	<description>NFC安防巡查</description>
+
+	<author email="bike2002@163.com" href="http://xjxt.wifi24.cn">Bike2002</author>
+
+	<content src="html/login.html"/>
+
+	<access origin="*"/>
+
+	<preference name="pageBounce" value="false"/>
+
+	<preference name="appBackground" value="rgba(0,0,0,0.0)"/>
+
+	<preference name="windowBackground" value="rgba(0,0,0,0.0)"/>
+
+	<preference name="frameBackgroundColor" value="rgba(0,0,0,0.0)"/>
+
+	<preference name="hScrollBarEnabled" value="false"/>
+
+	<preference name="vScrollBarEnabled" value="false"/>
+
+	<preference name="autoLaunch" value="true"/>
+
+	<preference name="fullScreen" value="false"/>
+
+	<preference name="autoUpdate" value="true"/>
+
+	<preference name="smartUpdate" value="false"/>
+
+	<preference name="debug" value="true"/>
+
+	<preference name="statusBarAppearance" value="true"/>
+
+	<permission name="location"/>
+
+	<permission name="readPhoneState"/>
+
+	<permission name="fileSystem"/>
+
+	<permission name="internet"/>
+
+	<permission name="bootCompleted"/>
+
+</widget>

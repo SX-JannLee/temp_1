@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style>
+        body {
+            font-size: 20px;
+            background-color: #fff;
+        }
+
+        header {
+            background-color: #1bbc9b;
+        }
+
+        section {
+            background-color: #fff;
+        }
+
+        h1 {
+            height: 2.5rem;
+            line-height: 2.5rem;
+            color: #fff;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .back {
+            position: absolute;
+            left: 0px;
+            bottom: 0px;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: url(../image/header/back.png) center center no-repeat;
+            background-size: 25px auto;
+        }
+
+        .userinfo {
+            width: 96%;
+            height: 76px;
+            margin: 5px auto;
+            /*border-bottom: solid 1px #fafafa;*/
+        }
+
+        .userinfo .yyuan {
+            float: left;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #FFA500;
+            text-align: center;
+            line-height: 63px;
+            font-size: .8rem;
+            color: #fff;
+            margin: 7px auto;
+        }
+
+        .userinfo .name {
+            float: left;
+            font-size: 1.2rem;
+            line-height: 80px;
+            margin-left: 10px;
+        }
+
+        .remark {
+            width: 96%;
+            height: 50px;
+            margin: 5px auto;
+            color: #7d8082;
+            font-size: .9rem;
+            line-height: 50px;
+            text-align: center;
+        }
+
+        .kuang {
+            /*width: 98%;*/
+            overflow: hidden;
+            margin: 0px auto;
+            text-align: center;
+            /*border-top: solid #f0eff4 10px;
+            border-bottom: solid #f0eff4 10px;*/
+        }
+
+        .kuang .riqi {
+            font-size: 1rem;
+            line-height: 3rem;
+            height: 3rem;
+            background-color: #fafafa;
+        }
+
+        .rows{
+            width: 100%;
+            height: 50px;
+            /*border: solid 1px #ccc;*/
+        }
+        .rows:active{
+            background-color: #fafafa;
+        }
+        .rows .left{
+            width: 50px;
+            height: 50px;
+            float: left;
+        }
+        .rows .left .yuan{
+            width: 40px;
+            height: 40px;
+            border-radius:50%;
+            background-color: #FFA500;
+            text-align: center;
+            line-height: 42px;
+            font-size:.7rem;
+            color: #fff;
+            margin: .25rem auto;
+        }
+        .rows .right{
+            width: 85%;
+            height: 50px;
+            line-height: 1.4rem;
+            font-size: .9rem;
+            padding-top: .7rem;
+            float: right;
+            border-bottom: solid 1px #fafafa;
+            text-align: left;
+            background:url(../image/arrowmy.png) no-repeat right;
+            background-size: 1rem 1rem;
+        }
+        .rows .right .gangwei{
+            font-size: .8rem;
+            line-height: 20px;
+            color: #666;
+        }
+
+        .aui-btn {
+            font-size: 1rem;
+            height: 2rem;
+            line-height: 2rem;
+            min-width: 5rem;
+        }
+        .UILineChart{
+            width: 98%;
+            height: 100$;
+            margin: 5px auto;
+            text-align: center;
+        }
+        .echarts{
+            width: 98%;
+            height: 20rem;
+            margin: .5rem auto;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="userinfo">
+          <div id=name2 class="yyuan"></div>
+          <div id="name" class="name"></div>
+    </div>
+    <div id="echarts" class="echarts">
+
+    </div>
+
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/bike.js"></script>
+<script type="text/javascript" src="../script/echarts.min.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var pageParam = api.pageParam;
+        var userinfo = $api.getStorage('userinfo');
+        if (typeof userinfo != "undefined" && userinfo.username) {
+            //alert(userinfo.name2);
+            $api.text($api.byId('name2'),userinfo.name2);
+            $api.text($api.byId('name'),userinfo.name);
+        }
+
+        //var date = new Date();　　 //2012-12-19
+        //$api.text($api.byId('remark'), userinfo.bumen + "　　" + date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日");
+
+
+
+        api.showProgress({
+            title: '正在加载...',
+            //text: '先喝杯茶...',
+            modal: false
+        });
+        var apipath = $api.getStorage('apipath');
+        var apiurl = apipath+"/Xjxtapi/getJixiaoTongjiByMonth";
+        // var apiurl = getConfigValue('apiurl') + "Gdxtapi/getJixiaoTongjiByMonth";
+        api.ajax({
+            url: apiurl,
+            method: 'post',
+            timeout: 5,
+            dataType: 'json',
+            returnAll: false,
+            data: {
+                values: {
+                    apiuser: getConfigValue('apiuser'),
+                    apipass: getConfigValue('apipass'),
+                    uid: userinfo.uid,
+                }
+            }
+        }, function(ret, err) {
+            api.hideProgress();
+            if (ret) {
+                //alert(JSON.stringify(ret));
+
+                var myChart = echarts.init(document.getElementById('echarts'));
+
+                //app.title = '坐标轴刻度与标签对齐';
+
+                option = {
+                    //color: ['#3398DB'],
+                    tooltip : {
+                        trigger: 'axis',
+                        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        }
+                    },
+                    grid: {
+                        left: '1%',
+                        right: '1%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis : [
+                        {
+                            type : 'category',
+                            data : [ret[0].title, ret[1].title, ret[2].title,ret[3].title, ret[4].title, ret[5].title],
+                            axisTick: {
+                                alignWithLabel: true
+                            }
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value'
+                        }
+                    ],
+                    series : [
+                        {
+                            name:'月绩效积分',
+                            type:'bar',
+                            label: {
+                               normal: {
+                                   fontSize:16,
+                                   show: true,
+                                   position: 'top'
+                               }
+                           },
+                            barWidth: '60%',
+                            data:[ret[0].nums, ret[1].nums, ret[2].nums,ret[3].nums, ret[4].nums, ret[5].nums]
+                        }
+                    ]
+                };
+
+
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+
+                //var doid = document.getElementById("txllist").innerHTML;
+                //document.getElementById("txlcontent").innerHTML = doT.template(doid)(ret);
+
+                // var UILineChart = api.require('UILineChart');
+                // UILineChart.open({
+                //     rect: {
+                //         x: 0,
+                //         y: 64,
+                //         w: 320,
+                //         h: 300
+                //         // x: 50,
+                //         // y: api.frameHeight / 2 - 170,
+                //         // w: api.frameWidth-50,
+                //         // h: 340
+                //     },
+                //     xAxis: {
+                //         indexs: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月', '一月'],
+                //         screenXcount: 7
+                //     },
+                //     yAxis: {
+                //         max: 1000,
+                //         min: -1000,
+                //         step: 200,
+                //         base: 0
+                //     },
+                //     datas: [
+                //         [200, -100, 100, 0, 50],
+                //         [-200, 100, -100, 0, -50]
+                //     ],
+                //     styles: {
+                //         xAxis: {
+                //             bg: '#b2dfee',
+                //             markColor: '#888',
+                //             markSize: 12
+                //         },
+                //         yAxis: {
+                //             bg: '#b2dfee',
+                //             markColor: '#888',
+                //             markSize: 12
+                //         },
+                //         coordinate: {
+                //             bg: '#fcfcfc',
+                //             color: '#cacaca',
+                //             baseColor: 'bbb',
+                //         },
+                //         colors: ['#800080', '#7FFFAA']
+                //     },
+                //     fixedOn: api.jixiaolinechart_c,
+                //     fixed: false
+                // }, function(ret, err) {
+                //     if (ret) {
+                //         //alert(JSON.stringify(ret));
+                //
+                //     } else {
+                //         //alert(JSON.stringify(err));
+                //     }
+                // });
+            } else {
+                //无数据
+            }
+        });
+
+    };
+
+    function reportday_detail(jxid,userid){
+        //alert(jxid);
+        api.openWin({
+            name: 'reportday_detail',
+            url: 'work_reportday_detail.html',
+            rect: {
+                x: 0,
+                y: 0,
+                w: 'auto',
+                h: 'auto'
+            },
+            pageParam: {
+                title: '绩效看板',
+                jxid: jxid,
+                userid:userid
+            }
+        });
+    }
+
+</script>
+
+</html>

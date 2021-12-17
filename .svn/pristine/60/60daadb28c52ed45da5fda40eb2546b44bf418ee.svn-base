@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>title</title>
+      <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../css/weui.min.css"/>
+      <style>
+          body{
+             background-color: #fff;
+          }
+          .weui-cells__title{
+          	font-weight:bold;
+          }
+          .height-small{
+          	font-family: microsoft yahei;
+
+          	font-size:16px;
+          }
+          .weui-uploader__file{
+          	margin: 0.5em 15px 9px 15px;
+          }
+          html, body {
+          	padding-bottom: 28px;
+          }
+          .field-icon {
+          	position: relative;
+          	display: block;
+          	overflow: hidden;
+          	padding-top:.03rem;
+          }
+          ul {
+          	padding:0px;
+          }
+          li {
+          	list-style: none;
+          }
+
+          .weui-cells {
+               margin-top:0.1em;
+          }
+          .weui-label {
+          	width: auto;
+          }
+          .weui-icon-checked:before {
+          	/*font: normal normal normal 14px/1 weui;*/
+          	font-family: weui;
+          }
+          .weui-icon-warn:before {
+          	/*font: normal normal normal 14px/1 weui;*/
+          	font-family: weui;
+          }
+          .weui-icon-delete.weui-icon_gallery-delete:before {
+          	/*font: normal normal normal 14px/1 weui;*/
+          	font-family: weui;
+          }
+          .no-top-border:before {
+          	border-top:none;
+          }
+          .weui-toptips {
+          	top: 0px;
+          	left: 0;
+          	right: 0;
+          	padding: 10px;
+          }
+          .weui-grid-icon-yuan{
+          	width:56px;
+          	height:51px;
+          	margin:0 auto;
+          	border-radius: 8px;
+          	padding-top:5px;
+          	text-align:center;
+          	overflow:hidden;
+          }
+          .weui-grid__label{
+          	line-height:34px;
+          	font-weight:bold;
+          }
+          .weui-grid-label-normol{
+          	line-height:22px;
+          	font-weight:normal;
+          	font-size:16px;
+          	text-align:center;
+          	color:#333;
+          }
+          .weui-grid-label-normol .hongzhi{
+          	color:#900;
+          	font-weight:bold;
+          }
+          .weui-grid {
+              padding: 15px 10px 8px 10px;
+          }
+          .button {
+              border: solid 1px #ddd;
+              background: transparent;
+              border-radius: 4px;
+              font-size: 14px;
+              padding: 6px 15px;
+              margin: 0;
+              display: inline-block;
+              line-height: 20px;
+              transition: all 1s cubic-bezier(0.175,0.885,0.32,1) 0s;
+              border-color: #0ae;
+              background-color: #0ae;
+          	color:#fff;
+          }
+      </style>
+  </head>
+  <body>
+      <div style="width:92%; margin:12px auto 8px auto;">
+          <img src="../image/ad/workad.png" style="width:100%;border-radius:6px;" />
+      </div>
+      <section  style="width:92%; margin: 8px auto 8px auto;">
+          <div class="page grid" style="background-color:#fff;">
+                	<div class="weui-grids">
+                        <a class="weui-grid" tapmode onclick="qiandao()">
+                            <div class="weui-grid-icon-yuan" style="background-color:#3facc0;"><img src="../image/item/qiandao.png"> </div>
+                            <p class="weui-grid__label">签到</p>
+                        </a>
+
+                        <a class="weui-grid" tapmode onclick="calendar()">
+                            <div class="weui-grid-icon-yuan" style="background-color:#d9812a;"><img src="../image/item/05.png"> </div>
+                            <p class="weui-grid__label">签到纪录</p>
+                        </a>
+                        <a class="weui-grid"  tapmode onclick="qiandaobarchart()">
+                            <div class="weui-grid-icon-yuan" style="background-color:#cc3e39;"><img src="../image/item/07.png" alt=""> </div>
+                            <p class="weui-grid__label">签到图表</p>
+                        </a>
+
+                        <a class="weui-grid" tapmode  onclick="jixiao()">
+                            <div class="weui-grid-icon-yuan" style="background-color:#66ce40;"><img src="../image/item/04.png" alt=""> </div>
+                            <p class="weui-grid__label">工作绩效</p>
+                        </a>
+                        <a class="weui-grid" tapmode onclick="pingfen()">
+                            <div class="weui-grid-icon-yuan" style="background-color:#cc3e83;"><img src="../image/item/10.png"> </div>
+                            <p class="weui-grid__label">班长评分</p>
+                        </a>
+<!-- 
+                      <a class="weui-grid" tapmode onclick="reportday()">
+                          <div class="weui-grid-icon-yuan" style="background-color:#3fa9f5;"><img src="../image/item/01.png" alt=""> </div>
+                          <p class="weui-grid__label">绩效看板</p>
+                      </a>
+                      <a class="weui-grid" tapmode onclick="reportweekly()">
+                          <div class="weui-grid-icon-yuan" style="background-color:#dfb338;"><img src="../image/item/02.png" alt=""> </div>
+                          <p class="weui-grid__label">绩效看板</p>
+
+                      </a>
+                      <a class="weui-grid" tapmode onclick="reportmonth()">
+                          <div class="weui-grid-icon-yuan" style="background-color:#ea98b9;"><img src="../image/item/03.png" alt=""> </div>
+                          <p class="weui-grid__label">绩效看板</p>
+
+                      </a> -->
+
+
+                    <a  class="weui-grid"  tapmode onclick="jixiaolinechart()">
+                          <div class="weui-grid-icon-yuan" style="background-color:#945ab2;"><img src="../image/item/06.png" alt=""> </div>
+                          <p class="weui-grid__label">绩效图表</p>
+                      </a>
+
+
+                </div>
+              </div>
+      </section>
+  </body>
+  <script type="text/javascript" src="../script/api.js"></script>
+  <script type="text/javascript" src="../script/bike.js"></script>
+  <script type="text/javascript">
+      apiready = function(){
+            //var pageParam = api.pageParam;
+            //alert(pageParam.title);
+      };
+  </script>
+  </html>

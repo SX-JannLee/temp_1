@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<security>
+<item name="appname" value="NFC安防巡查" />
+<item name="apiurl" value="http://gdsxxtapi.sxtzy.net:889/index/" />
+<item name="apiuser" value="ltsy3346" />
+<item name="apipass" value="2d1568ad62059e507cf036b6486df849" />
+</security>

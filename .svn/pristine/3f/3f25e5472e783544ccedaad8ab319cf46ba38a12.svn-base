@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>配置</title>
+      <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+      <style>
+          body{
+              font-size: 20px;
+              background-color: #fff;
+          }
+          header {
+              background-color: #267379;
+          }
+          section{
+              background-color: #fff;
+          }
+          h1 {
+              height: 2.5rem;
+              line-height: 2.5rem;
+              color: #fff;
+              font-size: 20px;
+              text-align: center;
+          }
+
+          .back {
+              position: absolute;
+              left: 0px;
+              bottom: 0px;
+              width: 2.5rem;
+              height: 2.5rem;
+              background: url(../image/header/back.png) center center no-repeat;
+              background-size: 25px auto;
+          }
+          .titleright {
+              position: absolute;
+              right: 0px;
+              bottom: 0px;
+              width: 2.5rem;
+              height: 2.5rem;
+              line-height: 2.5rem;
+              color: #fff;
+          }
+          .userinfo{
+              width: 96%;
+              height: 76px;
+              margin: 5px auto;
+              border-bottom: solid 1px #fafafa;
+          }
+          .userinfo .yyuan{
+              float: left;
+              width: 60px;
+              height: 60px;
+              border-radius:50%;
+              background-color: #FFA500;
+              text-align: center;
+              line-height: 63px;
+              font-size:.8rem;
+              color: #fff;
+              margin: 7px auto;
+          }
+          .userinfo .name{
+              float: left;
+              font-size: 1.2rem;
+              line-height: 80px;
+              margin-left: 10px;
+          }
+          .remark{
+              width: 96%;
+              height: 50px;
+              margin: 5px auto;
+              color: #7d8082;
+              font-size: .7rem;
+              line-height: 50px;
+          }
+      </style>
+  </head>
+  <body>
+      <section>
+          <p class="aui-padded-15 aui-text-center aui-font-size-20" style="color:#333; line-height:80px;">配置</p>
+          <div class="aui-content aui-margin-b-15">
+              <ul id="txlcontent" class="aui-list aui-form-list" style="background-image:none;">
+                    <script type="text/template" charset="utf-8" id="txllist">
+                        {{if(it.length>0 ){ }}
+                            {{for(var i=0;i< it.length;i++) { }}
+                        <li class="aui-list-item" style="background-image:none;">
+                            <div class="aui-list-item-inner" style="min-height: 2.5rem;">
+                                <div class="aui-list-item-label" style="text-align: right;display: block;">
+                                    服务器地址：
+                                </div>
+                                <div class="aui-list-item-input">
+                                    <input type="text" id="url" class="aui-input" style="border: solid 1px #ddd;padding:3px;" placeholder="" value="{{=it[i].url }}" />
+                                </div>
+                            </div>
+                        </li>
+                        <li class="aui-list-item" style="background-image:none;">
+                            <div class="aui-list-item-inner" style="min-height: 2.5rem;">
+                                <div class="aui-list-item-label" style="text-align: right;display: block;">
+                                    服务器端口：
+                                </div>
+                                <div class="aui-list-item-input">
+                                    <input type="text" id="port" class="aui-input" style="border: solid 1px #ddd;padding:3px;" placeholder="" value="{{=it[i].port }}" />
+                                </div>
+                            </div>
+                        </li>
+                        
+
+                        <li class="aui-list-item"  style="background-image:none;min-height: 1.2rem;max-height:1.2rem;">
+                        </li>
+                        <li class="aui-list-item" style="background-image:none;">
+                            <div class="aui-list-item-inner">
+
+                                <div class="aui-list-item-input">
+                                    <a class="aui-btn aui-btn-info aui-btn-block" style="background-color:#336699!important;" tapmode onclick="configedit()">修改</a>
+                                </div>
+                            </div>
+                        </li>
+                            {{ } }}
+                        {{ } }}
+                    </script>
+              </ul>
+          </div>
+      </section>
+      <div style="height:4rem; background-color:#fff;"></div>
+  </body>
+  <script type="text/javascript" src="../script/api.js"></script>
+  <script type="text/javascript" src="../script/bike.js"></script>
+  <script type="text/javascript" src="../script/doT.min.js"></script>
+  <script type="text/javascript">
+        
+        apiready = function(){
+            var db = api.require('db');
+            db.openDatabase({
+                name: 'main',
+                path:'widget://db/mydb.db',
+            }, function(ret, err) {
+                if (ret.status) {
+                    //alert(JSON.stringify(ret));
+                    db.selectSql({
+                        name: 'main',
+                        sql: 'select id,url,port from url where id = 1'
+                    }, function(ret, err) {
+                        if (ret.status) {
+                            // alert(JSON.stringify(ret));
+                            var doid = document.getElementById("txllist").innerHTML;
+                            document.getElementById("txlcontent").innerHTML = doT.template(doid)(ret.data);
+                            //api.hideProgress();
+                        } else {
+                            //alert(JSON.stringify(err));
+                        }
+                    });
+                } else {
+                    //alert(JSON.stringify(err));
+                }
+            });
+        };
+
+        function configedit(){
+            var url = $api.val($api.byId('url'));
+            var port = $api.val($api.byId('port'));
+            if(url == "")
+            {
+                alert("请填写服务器地址");
+                return false;
+            }
+            if(port == "")
+            {
+                alert("请填写服务器端口");
+                return false;
+            }
+            verify();
+        }
+
+
+
+        // 校验验证码
+        function verify(){
+            var url = document.getElementById("url").value;
+            var port = document.getElementById("port").value;
+
+            var db = api.require('db');
+            db.openDatabase({
+                name: 'main',
+                path:'widget://db/mydb.db',
+            }, function(ret, err) {
+                if (ret.status) {
+                    //alert(JSON.stringify(ret));
+                    db.selectSql({
+                        name: 'main',
+                        sql: 'update url set url="'+ url+'",port="' + port+ '" where id = 1'
+                    }, function(ret, err) {
+                        if (ret.status) {
+                            // alert(JSON.stringify(ret));
+                            var apipath = "http://"+url+":"+port;
+                            $api.setStorage('apipath',apipath);
+                            //api.hideProgress();
+
+                            api.alert({
+                                msg: '修改成功！',
+                            }, function(ret, err) {
+                                api.closeWin({name:'winconfig'});
+                            });
+                            
+
+                        } else {
+                            alert(JSON.stringify(err));
+                        }
+                    });
+                } else {
+                    alert(JSON.stringify(err));
+                }
+            });
+  
+            // var apiurl = global_path+"/Xjxtapi/userreg";
+
+            // alert(apiurl);
+
+            // api.ajax({
+            //     url: apiurl,
+            //     method: 'post',
+            //     timeout: 5,
+            //     dataType: 'json',
+            //     returnAll: false,
+            //     data:{
+            //         values: {
+            //             apiuser:getConfigValue('apiuser'),
+            //             apipass:getConfigValue('apipass'),
+            //             phone: phone,
+            //             password: password
+            //         }
+            //     }
+            // }, function(ret, err) {
+            //     //alert(JSON.stringify(ret));
+
+            //     if(ret.renum=='1')
+            //     {
+            //         api.alert({msg: ret.remsg});
+            //         api.closeWin({name:'regwin'});
+            //     }
+            //     else {
+            //         api.alert({msg: ret.remsg});
+            //     }
+            // });
+        
+        }
+
+  </script>
+  </html>

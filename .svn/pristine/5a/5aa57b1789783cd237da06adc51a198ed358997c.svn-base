@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>title</title>
+      <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+      <style>
+          body{
+              font-size: 20px;
+              background-color: #fff;
+          }
+          header {
+              background-color: #a62b26;
+          }
+          section{
+              background-color: #fff;
+          }
+          h1 {
+              height: 2.5rem;
+              line-height: 2.5rem;
+              color: #fff;
+              font-size: 20px;
+              text-align: center;
+          }
+
+          .back {
+              position: absolute;
+              left: 0px;
+              bottom: 0px;
+              width: 2.5rem;
+              height: 2.5rem;
+              background: url(../image/header/back.png) center center no-repeat;
+              background-size: 25px auto;
+          }
+          .kuang{
+              width: 100%;
+              height: 150px;
+              padding: 15px;
+              border: solid 1px #f0f0f0;
+              border-radius: 3px;
+              box-shadow: 0 5px 5px #f1f1f1;
+          }
+          .kuang .right{
+              width: 76px;
+              height: 76px;
+              float: right;
+          }
+          .kuang .right .yuan{
+              float: right;
+              width: 50px;
+              height: 50px;
+              border-radius:50%;
+              background-color: #3396fb;
+              text-align: center;
+              line-height: 56px;
+              font-size:.9rem;
+              color: #fff;
+              margin: 13px auto;
+          }
+          .kuang .left{
+              width: 70%;
+              height: 62px;
+              line-height: 1.8rem;
+              font-size: 1.2rem;
+              padding-top: .8rem;
+              float: left;
+              /*border-bottom: solid 1px #fafafa;*/
+              text-align: left;
+          }
+          .kuang .left .gangwei{
+              font-size: .8rem;
+              padding-top: .8rem;
+              line-height: 1.7rem;
+              color: #666;
+          }
+          .myhang{
+              width: 100%;
+              height: 60px;
+              border-bottom: solid 1px #fafafa;
+          }
+          .myhang .itemicon{
+                width: 35px;
+                height: 35px;
+                float: left;
+                border-radius: 5px;
+                text-align: center;
+                margin-top: 12px;
+          }
+          .myhang .icons{
+              width: 25px;
+              height: 25px;
+              margin: 5px auto;
+          }
+          .myhang .lefttext{
+                height: 60px;
+                float: left;
+                font-size: .8rem;
+                margin-left: .5rem;
+                line-height: 60px;
+          }
+          .myhang .right{
+              float: right;
+              text-align: right;
+              width: 1rem;
+              height: 60px;
+              background:url(../image/arrowmy.png) no-repeat center;
+              background-size: 1rem 1rem;
+          }
+      </style>
+  </head>
+  <body>
+
+      <section id="txlcontent" style="width:92%; margin:8px auto 0px auto; ">
+
+                  <div class="kuang">
+                      <div class="left">
+                          <br />
+                          <span class="gangwei"></span>
+                      </div>
+                      <div class="right">
+                              <div class="yuan"></div>
+                      </div>
+                  </div>
+                  <br />
+
+      </section>
+
+        <section style="width:92%; margin:0px auto; ">
+            <div class="myhang" tapmode onclick="mydetail('my_changepass')">
+                <div class="itemicon" style="background-color:#3296fa;">
+                    <img class="icons" src="../image/item/my01.png" />
+                </div>
+                <div class="lefttext">修改密码</div>
+                <div class="right"></div>
+            </div>
+            <div class="myhang" tapmode onclick="mydetail('my_editinfo')">
+                <div class="itemicon" style="background-color:#ff943e;">
+                    <img class="icons" src="../image/item/my02.png" />
+                </div>
+                <div class="lefttext">个人信息</div>
+                <div class="right"></div>
+            </div>
+            <div class="myhang" tapmode onclick="mydetail('my_loginlog')">
+                <div class="itemicon" style="background-color:#f25643;">
+                    <img class="icons" src="../image/item/my03.png" />
+                </div>
+                <div class="lefttext">登录日志</div>
+                <div class="right"></div>
+            </div>
+            <div class="myhang" tapmode onclick="exitapp()">
+                <div class="itemicon" style="background-color:#15bc83;">
+                    <img class="icons" src="../image/item/my04.png" />
+                </div>
+                <div class="lefttext">退出程序</div>
+                <div class="right"></div>
+            </div>
+        </section>
+  </body>
+  <script type="text/javascript" src="../script/api.js"></script>
+  <script type="text/javascript" src="../script/bike.js"></script>
+  <script type="text/javascript" src="../script/doT.min.js"></script>
+  <script type="text/javascript">
+      apiready = function(){
+        var userinfo = $api.getStorage('userinfo');
+          if(typeof userinfo != "undefined" && userinfo.mobile){
+
+              var strhtml = '<div class="kuang"><div class="left">'+ userinfo.name +'<br /><span class="gangwei">'+userinfo.school_name +' '+ userinfo.class_name+'</span></div><div class="right"><div class="yuan">'+userinfo.name2+'</div></div></div><br />';
+
+              $api.html($api.byId('txlcontent'), strhtml);
+          }
+      };
+
+      function mydetail(strurl)
+      {
+          api.openWin({
+              name: strurl,
+              url: strurl+'.html',
+              bounces: false,
+              pageParam: {
+                 //title: '通讯录',
+                 //uid: uid
+              }
+          });
+      }
+
+      function exitapp(){
+          api.closeWidget();
+            // api.addEventListener({
+            //     name: 'keyback'
+            // }, function(ret, err) {
+            //     api.closeWidget();
+            // });
+      }
+  </script>
+  </html>

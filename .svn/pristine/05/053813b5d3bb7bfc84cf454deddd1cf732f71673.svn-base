@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style>
+        body {
+            font-size: 20px;
+            background-color: #fff;
+        }
+
+        header {
+            background-color: #336699;
+        }
+
+        #main {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            background-color: #fff;
+        }
+
+        section {
+            background-color: #fff;
+        }
+
+        h1 {
+            height: 2.5rem;
+            line-height: 2.5rem;
+            color: #fff;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .back {
+            position: absolute;
+            left: 0px;
+            bottom: 0px;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: url(../image/header/back.png) center center no-repeat;
+            background-size: 25px auto;
+        }
+
+        .kuang {
+            width: 100%;
+            height: 150px;
+            padding: 15px;
+            border: solid 1px #f0f0f0;
+            border-radius: 3px;
+            box-shadow: 0 5px 5px #f1f1f1;
+        }
+
+        .kuang .right {
+            width: 76px;
+            height: 76px;
+            float: right;
+        }
+
+        .kuang .right .yuan {
+            float: right;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #3396fb;
+            text-align: center;
+            line-height: 56px;
+            font-size: .9rem;
+            color: #fff;
+            margin: 13px auto;
+        }
+
+        .kuang .left {
+            width: 70%;
+            height: 62px;
+            line-height: 1.8rem;
+            font-size: 1.2rem;
+            padding-top: .8rem;
+            float: left;
+            /*border-bottom: solid 1px #fafafa;*/
+            text-align: left;
+        }
+
+        .kuang .left .gangwei {
+            font-size: .8rem;
+            padding-top: .8rem;
+            line-height: 1.7rem;
+            color: #666;
+        }
+
+        .myhang {
+            /*width: 100%;*/
+            height: 76px;
+            margin: 1.2rem auto;
+            font-size: .8rem;
+            line-height: 76px;
+        }
+
+        .myhang .left {
+            width: 40%;
+            height: 76px;
+            float: left;
+        }
+
+        .hang .left .hangitem {
+            color: #666;
+            font-size: .6rem;
+        }
+
+        .hang .left .hangcontent {
+            font-size: .8rem;
+        }
+
+        .myhang .right {
+            width: 60%;
+            height: 76px;
+            float: right;
+            text-align: left;
+        }
+
+        .aui-list .aui-list-item-label, .aui-list .aui-list-item-label-icon {
+            line-height: 3rem;
+        }
+        .aui-btn {
+            font-size: 1rem;
+            height: 2rem;
+            line-height: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <div id="bikeclose" class="back event-back" tapmode onclick="api.closeWin({name:'my_changepass'});"></div>
+        <h1 id="pagetitle">修改密码</h1>
+    </header>
+    <section style="width:92%; margin:8px auto 0px auto; ">
+        <div class="aui-content aui-margin-b-15">
+            <ul class="aui-list aui-form-list">
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-label">
+                            用户名：
+                        </div>
+                        <div class="aui-list-item-input">
+                            <span id="mobile"></span>
+                        </div>
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-label">
+                            旧密码：
+                        </div>
+                        <div class="aui-list-item-input">
+                            <input id="oldpass" type="password" >
+                        </div>
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-label">
+                            新密码：
+                        </div>
+                        <div class="aui-list-item-input">
+                            <input id="newpass" type="password" >
+                        </div>
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-label">
+                            确认密码：
+                        </div>
+                        <div class="aui-list-item-input">
+                            <input id="newpass2" type="password" >
+                        </div>
+                    </div>
+                </li>
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn">
+                        <div class="aui-btn aui-btn-info aui-margin-r-5" style="min-width: 5rem;" onclick="changepass()">修改</div>
+
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/bike.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var userinfo = $api.getStorage('userinfo');
+        if(typeof userinfo != "undefined" && userinfo.mobile){
+            $api.text($api.byId('mobile'),userinfo.mobile);
+        }
+    };
+
+    function changepass(){
+        var userinfo = $api.getStorage('userinfo');
+        var uid = userinfo.uid;
+        var oldpass = $api.val($api.byId('oldpass'));
+        var newpass = $api.val($api.byId('newpass'));
+        var newpass2 = $api.val($api.byId('newpass2'));
+
+        //alert(usernametext);
+
+        if(oldpass=="")
+        {
+            alert('旧密码不能为空');
+        }
+        else
+        {
+            if(newpass=="")
+            {
+                alert('新密码不能为空');
+            }
+            else
+            {
+                if(newpass.length<5)
+                {
+                    alert('密码长度至少6位');
+                }
+
+                else
+                {
+                    if(newpass2=="")
+                    {
+                        alert('确认密码不能为空');
+                    }
+                    else
+                    {
+                        if(newpass!=newpass2)
+                        {
+                            alert('两次输入的密码不一致');
+                        }
+                        else
+                        {
+
+                            var apipath = $api.getStorage('apipath');
+                            var apiurl = apipath+"/Xjxtapi/changepass";
+                            api.ajax({
+                                url: apiurl,
+                                method: 'post',
+                                timeout: 5,
+                                dataType: 'json',
+                                returnAll: false,
+                                data:{
+                                    values: {
+                                        apiuser:getConfigValue('apiuser'),
+                                        apipass:getConfigValue('apipass'),
+                                        uid: uid,
+                                        oldpass: oldpass,
+                                        newpass: newpass
+                                    }
+                                }
+                            }, function(ret, err) {
+                                //alert(JSON.stringify(ret));
+                                alert(ret.remsg);
+                                if(ret.renum=='1')
+                                {
+                                    api.closeWin({name:'my_changepass'});
+                                }
+                            });
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+</script>
+
+</html>

@@ -1,0 +1,217 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,initial-scale=1.0,width=device-width"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>绩效考核管理</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/bike.css" />
+    <style type="text/css">
+    html,body{
+        height: 100%;
+    }
+    #wrap{
+        height: 100%;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-flex-flow: column;
+    }
+    #header{
+        text-align: center;
+		background-color: #336699;
+		color: #fff;
+        width: 100%;
+
+    }
+    #header h1{
+        font-size: 1rem;
+  		height: 2.5rem;
+  		line-height:2.5rem;
+  		margin: 0;
+  		color: #fff;
+    }
+    #main{
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        background-color:#fff;
+    }
+
+    .aui-bar {
+        border-top: solid 1px #ccc;
+        padding-top: 4px;
+    }
+    .aui-bar-tab .aui-active {
+        color: #1bbc9b;
+    }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <header id="header">
+            <h1 id="pagetitle">工作</h1>
+        </header>
+
+        <div id="main">
+        </div>
+
+        <footer id="footer" class="aui-bar aui-bar-tab">
+            <div class="aui-bar-tab-item aui-active" id="m01" onclick="fnChange('m01',1)" tapmode>
+                <div class="bike-bar-tab-img"><img class="bike-bar-tab-img-icon" id="menuicon1" src="../image/menu/m01a.png" /> </div>
+                <div class="aui-bar-tab-label">工作</div>
+            </div>
+            <div class="aui-bar-tab-item" id="m02" onclick="fnChange('m02',2)" tapmode>
+                <div class="bike-bar-tab-img"><img class="bike-bar-tab-img-icon" id="menuicon2" src="../image/menu/m02.png" /> </div>
+                <div class="aui-bar-tab-label">通讯录</div>
+            </div>
+            <div class="aui-bar-tab-item" id="m03" onclick="fnChange('m04',3)" tapmode>
+                <div class="bike-bar-tab-img"><img class="bike-bar-tab-img-icon" id="menuicon3" src="../image/menu/m04.png" /> </div>
+                <div class="aui-bar-tab-label">我的</div>
+            </div>
+        </footer>
+    </div>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/bike.js"></script>
+<script type="text/javascript">
+    apiready = function(){
+
+        checklogin()
+        //var winName = api.winName
+        //alert(winName);
+        //var wrap = $api.byId('wrap');
+        //适配iOS7+，Android4.4+状态栏沉浸式效果，详见config文档statusBarAppearance字段
+        //$api.fixStatusBar(wrap);
+        //var userinfo = $api.getStorage('userinfo');
+        //alert(userinfo.uid);
+
+        var header = $api.byId('header');
+        var footer = $api.byId('footer');
+		//动态计算header的高度，因iOS7+和Android4.4+上支持沉浸式效果，
+        //因此header的实际高度可能为css样式中声明的44px加上设备状态栏高度
+		//其中，IOS状态栏高度为20px，Android为25px
+        var headerH = $api.offset(header).h;
+		//footer高度为css样式中声明的30px
+		var footerH = $api.offset(footer).h;
+		//frame的高度为当前window高度减去header和footer的高度
+        var frameH = api.winHeight - headerH - footerH;
+        api.openFrame({
+            name: 'work',
+            url: 'work.html',
+            bounces: false,
+            rect: {
+                x: 0,
+                y: headerH,
+                w: 'auto',
+                h: frameH
+            },
+            vScrollBarEnabled:false,
+            //pageParam: {
+            //    title: '工作'
+            //}
+        });
+
+        // var FNSettings = api.require('FNSettings');
+        // FNSettings.setScreenRotationMode({
+        //     mode: 'AUTO'
+        // });
+        // api.setScreenOrientation({
+        //     orientation: 'auto'
+        // });
+
+
+    };
+
+
+    var frameNames = ['work', 'txl', 'my'];
+
+    function fnChange(idname,index) {
+
+
+        menus = $api.domAll(footer, '.aui-bar-tab-item');
+        menuicons = $api.domAll(footer, '.bike-bar-tab-img-icon');
+
+        $api.attr(menuicons[0],'src','../image/menu/m01.png');
+        $api.attr(menuicons[1],'src','../image/menu/m02.png');
+        //$api.attr(menuicons[2],'src','../image/menu/m03.png');
+        $api.attr(menuicons[2],'src','../image/menu/m04.png');
+
+        var pagetitle = $api.byId('pagetitle');
+
+
+        for (var i = 1; i < 4; i++)
+        {
+
+            if (index == i) {
+
+                 $api.addCls(menus[i-1], 'aui-active');
+                 $api.attr(menuicons[i-1],'src','../image/menu/'+idname+'a.png');
+
+                 switch (i) {
+                     case 1:
+                         $api.text(pagetitle, '工作');
+                         fnOpenFrame(i, true);
+                         break;
+                     case 2:
+                         $api.text(pagetitle, '通讯录');
+                         fnOpenFrame(i, true);
+                         break;
+                    //  case 3:
+                    //      $api.text(pagetitle, '资料查询');
+                    //      fnOpenFrame(i, true);
+                    //      break;
+                     case 3:
+                         $api.text(pagetitle, '我的信息');
+                         fnOpenFrame(i, true);
+                         break;
+                 }
+
+            }
+            else
+            {
+
+                $api.removeCls(menus[i-1], 'aui-active');
+                //fnOpenFrame(i, false);
+
+            }
+
+        }
+    }
+
+    function fnOpenFrame(index, isOpen) {
+
+        var header = $api.byId('header');
+        var footer = $api.byId('footer');
+        //动态计算header的高度，因iOS7+和Android4.4+上支持沉浸式效果，
+        //因此header的实际高度可能为css样式中声明的44px加上设备状态栏高度
+        //其中，IOS状态栏高度为20px，Android为25px
+        var headerH = $api.offset(header).h;
+        //footer高度为css样式中声明的30px
+        var footerH = $api.offset(footer).h;
+        //frame的高度为当前window高度减去header和footer的高度
+        var frameH = api.winHeight - headerH - footerH;
+
+        if (isOpen) {
+            api.openFrame({
+                name: frameNames[index-1],
+                url: frameNames[index-1] + '.html',
+                bounces: false,
+                rect: {
+                    x: 0,
+                    y: headerH,
+                    w: 'auto',
+                    h: frameH
+                },
+                vScrollBarEnabled:false
+            });
+        } else {
+            // api.setFrameAttr({
+            //     name: frameNames[index],
+            //     hidden: true
+            // });
+        }
+    };
+</script>
+</html>

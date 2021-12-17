@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>title</title>
+      <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+      <style>
+          body{
+              font-size: 20px;
+          }
+          header {
+              background-color: #1bbc9b;
+          }
+          section{
+              background-color: #fff;
+          }
+          h1 {
+              height: 2.5rem;
+              line-height: 2.5rem;
+              color: #fff;
+              font-size: 20px;
+              text-align: center;
+          }
+
+          .back {
+              position: absolute;
+              left: 0px;
+              bottom: 0px;
+              width: 2.5rem;
+              height: 2.5rem;
+              background: url(../image/header/back.png) center center no-repeat;
+              background-size: 25px auto;
+          }
+          .titleright {
+              position: absolute;
+              right: 0px;
+              bottom: 0px;
+              width: 2.5rem;
+              height: 2.5rem;
+              line-height: 2.5rem;
+              color: #fff;
+          }
+          .userinfo{
+              width: 96%;
+              height: 76px;
+              margin: 5px auto;
+              border-bottom: solid 1px #fafafa;
+          }
+          .userinfo .yyuan{
+              float: left;
+              width: 60px;
+              height: 60px;
+              border-radius:50%;
+              background-color: #FFA500;
+              text-align: center;
+              line-height: 63px;
+              font-size:.8rem;
+              color: #fff;
+              margin: 7px auto;
+          }
+          .userinfo .name{
+              float: left;
+              font-size: 1.2rem;
+              line-height: 80px;
+              margin-left: 10px;
+          }
+          .remark{
+              width: 96%;
+              height: 50px;
+              margin: 5px auto;
+              color: #7d8082;
+              font-size: .7rem;
+              line-height: 50px;
+          }
+          .qiandaorow{
+              width: 96%;
+              height: 150px;
+              margin: 5px auto;
+              text-align: center;
+          }
+          .qiandaorow .blueyuan{
+              width: 120px;
+              height: 120px;
+              border-radius:50%;
+              background: linear-gradient(#67c0ff, #3196fa); /* 标准的语法 */
+              text-align: center;
+              line-height: 1.4rem;
+              font-size:1rem;
+              color: #fff;
+              margin: 0px auto;
+              padding-top: 40px;
+          }
+      </style>
+  </head>
+  <body>
+      <header id="header">
+          <div id="bikeclose" class="back event-back" tapmode onclick="api.closeWin({name:'qiandao'});"></div>
+          <h1 id="pagetitle"></h1>
+      </header>
+      <section>
+          <div class="userinfo">
+                <div id=name2 class="yyuan"></div>
+                <div id="name" class="name"></div>
+          </div>
+          <div class="remark">
+              每日考勤签到
+          </div>
+          <div class="qiandaorow">
+                <div class="blueyuan" tapmode onclick="qiandao();">
+                    考勤签到<br />
+                    <span id="nowdate" style="font-size:.7rem;color:#a6daff; line-height:1.1rem;">2021-07-26</span>
+                </div>
+          </div>
+      </section>
+  </body>
+  <script type="text/javascript" src="../script/api.js"></script>
+  <script type="text/javascript" src="../script/bike.js"></script>
+  <script type="text/javascript">
+      apiready = function(){
+          var pageParam = api.pageParam;
+          $api.text($api.byId('pagetitle'), pageParam.title);
+
+          var userinfo = $api.getStorage('userinfo');
+          if(userinfo.username != null){
+              //alert(userinfo.name2);
+              $api.text($api.byId('name2'),userinfo.name2);
+              $api.text($api.byId('name'),userinfo.name);
+              var myDate = new Date();　　//2012-12-19
+              //$api.text($api.byId('nowdate'),date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate());
+              $api.text($api.byId('nowdate'),myDate.getFullYear()+"-"+(myDate.getMonth()+1)+"-"+myDate.getDate());
+              //$api.text($api.byId('nowdate'),myDate.toLocaleDateString());
+          }
+
+      };
+
+      function qiandao()
+      {
+          //alert('a');
+          var apipath = $api.getStorage('apipath');
+          var apiurl = apipath+"/Xjxtapi/getQiandao";
+          var userinfo = $api.getStorage('userinfo');
+          var uid = userinfo.uid;
+          //alert(uid);
+          api.ajax({
+              url: apiurl,
+              method: 'post',
+              timeout: 5,
+              dataType: 'json',
+              returnAll: false,
+              data:{
+                  values: {
+                      apiuser:getConfigValue('apiuser'),
+                      apipass:getConfigValue('apipass'),
+                      uid:uid
+                  }
+              }
+          }, function(ret, err) {
+              //api.hideProgress();
+              if(ret) {
+                  if(ret.result==1)
+                  {
+                      alert("签到成功！");
+                  }
+                  else {
+                      alert("您已签过到！");
+                  }
+              } else {
+                  //无数据
+              }
+          });
+      }
+
+
+  </script>
+  </html>

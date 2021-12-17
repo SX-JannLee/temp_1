@@ -1,0 +1,226 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>灵童书院</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style type="text/css">
+    html,body{
+        background-color:#fff;
+    }
+
+    .aui-list {
+      border-top: none;
+      background-color:transparent;
+      FILTER: alpha(opacity=0);
+    }
+    .aui-list .aui-form-list .aui-list-item:active {
+      background-color:transparent;
+      FILTER: alpha(opacity=0);
+    }
+    .aui-list .aui-list-item:active {
+      background-color:transparent;
+      FILTER: alpha(opacity=0);
+    }
+
+    </style>
+</head>
+<body>
+
+        <div style="width:60%; margin:3.2rem auto;">
+            <img src="../image/title.png" style="width:100%;border-radius:0px;" />
+        </div>
+
+      <div class="aui-content" style="max-width:80%; margin:2rem auto 1rem auto;">
+          <ul class="aui-list aui-form-list">
+                  <li class="aui-list-item">
+                      <div class="aui-list-item-inner" style="min-height: 2.5rem;">
+                          <div class="aui-list-item-label-icon" >
+                              <i class="aui-iconfont aui-icon-my" style="color:#336699; font-size:1rem;"></i>
+                          </div>
+                          <div class="aui-list-item-input">
+                              <input type="number" id="username" name="username" placeholder="手机号" oninput="if(value.length>11)value=value.slice(0,11)" style="color:#336699; font-size:1rem;">
+                          </div>
+                      </div>
+                  </li>
+                  <li class="aui-list-item">
+                      <div class="aui-list-item-inner" style="min-height: 2.5rem;">
+                          <div class="aui-list-item-label-icon">
+                              <i class="aui-iconfont aui-icon-lock" style="color:#336699; font-size:1rem;"></i>
+                          </div>
+                          <div class="aui-list-item-input">
+                              <input type="password" id="password" name="password" placeholder="密码"  style="color:#336699; font-size:1rem;">
+                          </div>
+                      </div>
+                  </li>
+                  <li style="background-image:none;height:.5rem;">
+                  </li>
+                  <li class="aui-list-item" style="background-image:none;">
+                    <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn">
+                      <div class="aui-btn aui-btn-info aui-btn-block" style="background-color:#336699!important;" onclick="fnLogin()">登录</div>
+                    </div>
+                 </li>
+                 <li class="aui-list-item" style="background-image:none;">
+                   <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn">
+                     <div class="aui-btn aui-btn-info aui-btn-block" style="background-color:#336699!important;" onclick="fnConfig()">配置</div>
+                   </div>
+                </li>
+          </ul>
+
+      </div>
+
+      <div class="aui-content" style="max-width:80%; margin:.9rem auto; text-align:center; color:#666; font-size:.8rem;">
+        版权所有 &copy; 山西旭源科技
+      </div>
+      <div style="height:3rem; background-color:#fff;"></div>
+
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/bike.js"></script>
+<script type="text/javascript">
+    apiready = function(){
+
+        var userinfo = $api.getStorage('userinfo');
+        if(typeof userinfo != "undefined" && userinfo.mobile){
+            $api.val($api.byId('username'),userinfo.mobile);
+        }
+
+        api.addEventListener({
+            name:'offline'
+        }, function(ret, err){
+            alert('未连接网络。请连接网络或打开流量后再使用APP。');
+        });
+
+
+        var db = api.require('db');
+        db.openDatabase({
+            name: 'main',
+            path:'widget://db/mydb.db',
+        }, function(ret, err) {
+            if (ret.status) {
+                //alert(JSON.stringify(ret));
+                db.selectSql({
+                    name: 'main',
+                    sql: 'select id,url,port from url where id = 1'
+                }, function(ret, err) {
+                    if (ret.status) {
+                        // alert(JSON.stringify(ret.data[0].id));
+                        // $api.setStorage('url', ret.data[0].url);
+                        // $api.setStorage('port', ret.data[0].port);
+                        var apipath = "http://"+ret.data[0].url+":"+ret.data[0].port;
+                        $api.setStorage('apipath',apipath);
+                        // $api.getStorage('apipath');
+                        
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+            } else {
+                //alert(JSON.stringify(err));
+            }
+        });
+
+        //var wrap = $api.byId('wrap');
+        //适配iOS7+，Android4.4+状态栏沉浸式效果，详见config文档statusBarAppearance字段
+        //$api.fixStatusBar(wrap);
+        //alert($api.byId('wrap').height+' '+api.winHeight+' '+api.screenHeight);
+        //$api.byId('wrap').height = api.screenHeight;
+        //var offset = $api.offset(wrap);
+        //alert(offset.w+' '+offset.h);
+        //var winHeight = api.winHeight;
+        //$api.css(wrap,'height:'+api.screenHeight+'px;');
+    }
+
+
+    function fnLogin() {
+        var username = $api.byId('username');
+        var password = $api.byId('password');
+        var usernametext = username.value;
+        var passwordtext = password.value;
+        // alert(usernametext);
+
+        if(usernametext=="" || passwordtext=="")
+        {
+            alert('用户名或密码不能为空');
+        }
+        else
+        {
+            api.showProgress({
+                title: '登录中...',
+                //text: '先喝杯茶...',
+                modal: false
+            });
+            var apipath = $api.getStorage('apipath');
+            var apiurl = apipath+"/Xjxtapi/checkusername";
+            // alert(apiurl);
+
+            api.ajax({
+                url: apiurl,
+                method: 'post',
+                timeout: 5,
+                dataType: 'json',
+                returnAll: false,
+                data:{
+                    values: {
+                        apiuser:getConfigValue('apiuser'),
+                        apipass:getConfigValue('apipass'),
+                        username: usernametext,
+                        password: passwordtext
+                    }
+                }
+            }, function(ret, err) {
+                api.hideProgress();
+                // alert(JSON.stringify(ret));
+                if (ret && ret.renum=='1') {
+                    $api.setStorage('userinfo', ret.userinfo);
+                    // api.execScript({
+                    //     name:'main',
+                    //     frameName: 'my_frame',
+                    //     script:'loginMobile("'+emailText+'");'
+                    // });
+                    //api.closeWin();
+                    
+                    api.openWin({
+                        name: 'mainwin',
+                        url: 'main.html',
+                        pageParam: {
+                            name: 'mainwin'
+                        }
+                    });
+              
+
+                } else {
+                    alert('用户名或密码错误');
+                }
+            });
+
+        }
+
+    }
+
+    function fnConfig() {
+        api.openWin({
+            name: 'winconfig',
+            url: 'winconfig.html',
+            softInputMode:'resize',
+            pageParam: {
+                title: '配置'
+            }
+        });
+    }
+    function fnRetrievePass() {
+        api.openWin({
+            name: 'retrievepasswin',
+            url: 'retrievepasswin.html',
+            softInputMode:'resize',
+            pageParam: {
+                title: '找回密码'
+            }
+        });
+    }
+</script>
+</html>

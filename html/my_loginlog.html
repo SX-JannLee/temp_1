@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style>
+        body {
+            font-size: 20px;
+            background-color: #fff;
+        }
+
+        header {
+            background-color: #336699;
+        }
+
+        #main {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            background-color: #fff;
+        }
+
+        section {
+            background-color: #fff;
+        }
+
+        h1 {
+            height: 2.5rem;
+            line-height: 2.5rem;
+            color: #fff;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .back {
+            position: absolute;
+            left: 0px;
+            bottom: 0px;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: url(../image/header/back.png) center center no-repeat;
+            background-size: 25px auto;
+        }
+
+        .kuang {
+            width: 100%;
+            height: 150px;
+            padding: 15px;
+            border: solid 1px #f0f0f0;
+            border-radius: 3px;
+            box-shadow: 0 5px 5px #f1f1f1;
+        }
+
+        .kuang .right {
+            width: 76px;
+            height: 76px;
+            float: right;
+        }
+
+        .kuang .right .yuan {
+            float: right;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #3396fb;
+            text-align: center;
+            line-height: 56px;
+            font-size: .9rem;
+            color: #fff;
+            margin: 13px auto;
+        }
+
+        .kuang .left {
+            width: 70%;
+            height: 62px;
+            line-height: 1.8rem;
+            font-size: 1.2rem;
+            padding-top: .8rem;
+            float: left;
+            /*border-bottom: solid 1px #fafafa;*/
+            text-align: left;
+        }
+
+        .kuang .left .gangwei {
+            font-size: .8rem;
+            padding-top: .8rem;
+            line-height: 1.7rem;
+            color: #666;
+        }
+
+        .hang {
+            width: 100%;
+            height: 76px;
+            border-bottom: solid 1px #fafafa;
+        }
+
+        .hang .left {
+            width: 70%;
+            height: 76px;
+            float: left;
+        }
+
+        .hang .left .hangitem {
+            color: #666;
+            font-size: .6rem;
+        }
+
+        .hang .left .hangcontent {
+            font-size: .8rem;
+        }
+
+        .hang .right {
+            width: 76px;
+            height: 76px;
+            float: right;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <div id="bikeclose" class="back event-back" tapmode onclick="api.closeWin({name:'my_loginlog'});"></div>
+        <h1 id="pagetitle">登录日志</h1>
+    </header>
+    <div id="main">
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/bike.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var header = $api.byId('header');
+        var headerH = $api.offset(header).h;
+        var frameH = api.winHeight - headerH;
+        api.openFrame({
+            name: 'log',
+            url: 'my_loginlog_log.html',
+            bounces: false,
+            rect: {
+                x: 0,
+                y: headerH,
+                w: 'auto',
+                h: frameH
+            },
+            vScrollBarEnabled:false,
+            //pageParam: {
+            //    title: '工作'
+            //}
+        });
+    };
+</script>
+
+</html>

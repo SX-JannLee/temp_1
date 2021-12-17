@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>demo</title>
+    <link rel="stylesheet" href="../css/api.css">
+    <link rel="stylesheet" href="../css/aui.css">
+    <style>
+        html, body {
+            background: #ffffff;
+        }
+
+        .aui-btn {
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+<div class="aui-content-padded">
+    <p>
+    <div class="aui-btn aui-btn-info aui-btn-block" onclick="nfcGetId()">nfcGetId</div>
+    </p>
+    <p>
+    <div class="aui-btn aui-btn-info aui-btn-block" onclick="nfcRead()">nfcRead</div>
+    </p>
+    <p>
+    <div class="aui-btn aui-btn-info aui-btn-block" onclick="nfcWrite()">nfcWrite</div>
+    </p>
+</div>
+</body>
+</html>
+<script src="../script/api.js"></script>
+<script>
+    var androidNfc = null;
+    apiready = function () {
+        androidNfc = api.require('androidNfc');
+    };
+
+    function nfcGetId() {
+        androidNfc.nfcGetId(function (ret, err) {
+            if (ret.status) {
+                console.log(JSON.stringify(ret));
+                alert(JSON.stringify("读取的卡号：" + ret.cardId));
+            } else {
+                console.log(JSON.stringify(err));
+                alert(JSON.stringify("错误信息：" + err.msg));
+            }
+        });
+    }
+
+    function nfcRead() {
+        androidNfc.nfcRead(function (ret, err) {
+            if (ret.status) {
+                console.log(JSON.stringify(ret));
+                alert(JSON.stringify("读取的结果：" + ret.readResult));
+            } else {
+                console.log(JSON.stringify(err));
+                alert(JSON.stringify("错误信息：" + err.msg));
+            }
+        });
+    }
+
+    function nfcWrite() {
+        var param = {appParam: "Hello Taony"};
+        androidNfc.nfcWrite(param, function (ret, err) {
+            if (ret.status) {
+                console.log(JSON.stringify(ret));
+                alert(JSON.stringify("写入的结果：" + ret.status));
+            } else {
+                console.log(JSON.stringify(err));
+                alert(JSON.stringify("错误信息：" + err.msg));
+            }
+        });
+    }
+</script>
+

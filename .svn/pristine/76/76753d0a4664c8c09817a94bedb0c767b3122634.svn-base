@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>title</title>
+      <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+      <style>
+          body{
+              font-size: 20px;
+          }
+          header {
+              background-color: #1bbc9b;
+          }
+          section{
+              background-color: #fff;
+          }
+          h1 {
+              height: 2.5rem;
+              line-height: 2.5rem;
+              color: #fff;
+              font-size: 20px;
+              text-align: center;
+          }
+
+          .back {
+              position: absolute;
+              left: 0px;
+              bottom: 0px;
+              width: 2.5rem;
+              height: 2.5rem;
+              background: url(../image/header/back.png) center center no-repeat;
+              background-size: 25px auto;
+          }
+          .userinfo{
+              width: 96%;
+              height: 76px;
+              margin: 5px auto;
+              border-bottom: solid 1px #fafafa;
+          }
+          .userinfo .yyuan{
+              float: left;
+              width: 60px;
+              height: 60px;
+              border-radius:50%;
+              background-color: #FFA500;
+              text-align: center;
+              line-height: 63px;
+              font-size:.8rem;
+              color: #fff;
+              margin: 7px auto;
+          }
+          .userinfo .name{
+              float: left;
+              font-size: 1.2rem;
+              line-height: 80px;
+              margin-left: 10px;
+          }
+          .remark{
+              width: 96%;
+              height: 50px;
+              margin: 5px auto;
+              color: #7d8082;
+              font-size: .7rem;
+              line-height: 50px;
+          }
+          .calendar{
+              width: 96%;
+              height: 300px;
+              margin: 5px auto;
+              text-align: center;
+          }
+           .rili {
+            	width: 96%;
+                margin: 0 auto;
+            	height: 50px;
+            	background: #fff;
+            	overflow: hidden;
+                color: #7d8082;
+                font-size: .8rem;
+                line-height: 50px;
+            	border-bottom: 1px solid #f4f4f4;
+            }
+            .rili div{
+                width: 8%;
+                height: 50px;
+            }
+            .rili div.left{
+                float: left;
+                background: url(../icon/left_btn_active.png) center center no-repeat;
+                background-size: 1.3rem 1.3rem;
+            }
+            .rili div.right{
+                float: right;
+                background: url(../icon/right_btn_active.png) center center no-repeat;
+                background-size: 1.3rem 1.3rem;
+            }
+
+            .rili a {
+            	width: 84%;
+                height: 50px;
+                float: left;
+            	/*text-align: center;*/
+            	line-height: 50px;
+            	color: #7c7c7c;
+            	font-size: .8rem;
+            }
+            #time span {
+				font-size: .8rem;
+			}
+
+			#time span:nth-child(1) {
+				width: 20%;
+				margin-left: 25%;
+				text-align: right;
+			}
+
+			#time span:nth-child(2) {
+				width: 10%;
+				text-align: left;
+			}
+
+			#time span:nth-child(3) {
+				width: 10%;
+				text-align: left;
+			}
+
+			#time span:nth-child(4) {
+				width: 10%;
+				text-align: left;
+			}
+      </style>
+  </head>
+  <body>
+      <header id="header">
+          <div id="bikeclose" class="back event-back" tapmode onclick="api.closeWin({name:'calendar'});"></div>
+          <h1 id="pagetitle"></h1>
+      </header>
+      <section>
+          <div class="userinfo">
+                <div id=name2 class="yyuan"></div>
+                <div id="name" class="name"></div>
+          </div>
+          <div class="rili" >
+              <div class="left" onclick="gotoPreMonth()">
+
+              </div>
+              <a id="time"><span>2017</span><span>年</span><span>12</span><span>月</span></a>
+              <div class="right" onclick="gotoNextMonth()">
+
+              </div>
+          </div>
+          <div id="remark" class="remark" style="display:none;">
+              日历
+          </div>
+
+          <div id="calendar" class="calendar">
+
+          </div>
+
+      </section>
+  </body>
+  <script type="text/javascript" src="../script/api.js"></script>
+  <script type="text/javascript" src="../script/bike.js"></script>
+  <script type="text/javascript">
+      apiready = function(){
+            var pageParam = api.pageParam;
+            $api.text($api.byId('pagetitle'), pageParam.title);
+
+            var userinfo = $api.getStorage('userinfo');
+            if(typeof userinfo != "undefined" && userinfo.username){
+              //alert(userinfo.name2);
+              $api.text($api.byId('name2'),userinfo.name2);
+              $api.text($api.byId('name'),userinfo.name);
+            }
+
+            UICalendar = api.require('UICalendar');
+            UICalendar.open({
+                rect: {
+                    x: 10,
+                    //y: api.frameHeight / 2 - 170,
+                    //y: $api.dom('#calendar').offsetHeight,
+                    y: $api.dom('#header').offsetHeight+76+50,
+                    w: api.frameWidth - 20,
+                    h: 340
+                },
+                styles: {
+                    bg: 'rgba(0,0,0,0)',
+                    week: {
+                        weekdayColor: '#3b3b3b',
+                        weekendColor: '#a8d400',
+                        size: 14
+                    },
+                    date: {
+                        color: '#3b3b3b',
+                        selectedColor: '#fff',
+                        selectedBg: '#a8d500',
+                        size: 14
+                    },
+                    today: {
+                        color: '#fff',
+                        bg: '#5e97f6'
+                    },
+                    specialDate: {
+                        color: '#3b3b3b',
+                        bg: 'widget://image/yiqiandao.png'
+                    }
+                },
+                specialDate: [{
+                //     date: '2017-12-1'
+                // },{
+                //     date: '2017-12-3'
+                // },{
+                //     date: '2017-12-8'
+                }],
+                switchMode: 'horizontal',
+                fixedOn: api.calendar,
+                fixed: false
+            }, function(ret, err) {
+                if (ret) {
+                    //alert(JSON.stringify(ret));
+                    //$api.text($api.byId('remark'),ret.year + "年" + ret.month + "月");
+                    var year = ret.year;
+					var month = ret.month;
+					if(month < 10) {
+						month = "0" + month
+					}
+					var str = "<span class='Year'>" + year + "</span><span>年</span><span class='Month' style='color:#ff5a70;'>" + month + "</span><span>月</span>";
+					$api.html($api.byId('time'),str);
+					if(ret.eventType == "show") {
+						handleData(year,month);
+
+					} else if(ret.eventType == "special" || ret.eventType == "normal") {
+
+					}
+                } else {
+                    //alert(JSON.stringify(err));
+                }
+            });
+
+      };
+
+
+      function gotoPreMonth() {
+			UICalendar.prevMonth(function(ret,err){
+				if(ret){
+					var year=ret.year,
+						month=ret.month;
+					if(month<10){
+						month="0"+month
+					}
+					var str="<span class='Year'>"+year+"</span><span>年</span><span class='Month' style='color:#ff5a70;'>"+month+"</span><span>月</span>";
+			        $api.html($api.byId('time'),str);
+
+					handleData(year,month);
+				}
+			})
+
+		}
+
+		function gotoNextMonth() {
+
+			//var Year=parseInt($api.text($api.byId('Year')));
+			//var Month=parseInt($api.text($api.byId('Month')));
+
+			UICalendar.nextMonth(function(ret,err){
+				if(ret){
+					var year=ret.year,
+						month=ret.month;
+					if(month<10){
+						month="0"+month
+					}
+					var str="<span class='Year'>"+year+"</span><span>年</span><span class='Month' style='color:#ff5a70;'>"+month+"</span><span>月</span>";
+			        $api.html($api.byId('time'),str);
+					handleData(year,month);
+
+				}
+			})
+
+		}
+
+        function handleData(year,month) {
+            var apiurl = getConfigValue('apiurl')+"Gdxtapi/getQiandaoSelectByYearMonth";
+            var userinfo = $api.getStorage('userinfo');
+            var uid = userinfo.uid;
+            //alert(uid);
+            api.ajax({
+                url: apiurl,
+                method: 'post',
+                timeout: 5,
+                dataType: 'json',
+                returnAll: false,
+                data:{
+                    values: {
+                        apiuser:getConfigValue('apiuser'),
+                        apipass:getConfigValue('apipass'),
+                        uid:uid,
+                        year:year,
+                        month:month
+                    }
+                }
+            }, function(ret, err) {
+                //api.hideProgress();
+                if(ret) {
+                    var list = [];
+                    for (var i = 0; i < ret.length; i++) {
+                        var obj = {};
+						obj.date = ret[i].riqi;
+                        list.push(obj);
+                    }
+                    UICalendar.setSpecialDates({
+						specialDates: list
+					});
+                } else {
+                    //无数据
+                }
+            });
+        }
+
+  </script>
+  </html>

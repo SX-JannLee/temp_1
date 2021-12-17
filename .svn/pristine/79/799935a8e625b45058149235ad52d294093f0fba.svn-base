@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>配置</title>
+      <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+      <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+      <style>
+          body{
+              font-size: 20px;
+          }
+          header {
+              background-color: #336699;
+          }
+          section{
+              background-color: #fff;
+          }
+          h1 {
+              height: 2.5rem;
+              line-height: 2.5rem;
+              color: #fff;
+              font-size: 20px;
+              text-align: center;
+          }
+
+          .back {
+              position: absolute;
+              left: 0px;
+              bottom: 0px;
+              width: 2.5rem;
+              height: 2.5rem;
+              background: url(../image/header/back.png) center center no-repeat;
+              background-size: 25px auto;
+          }
+          .titleright {
+              position: absolute;
+              right: 0px;
+              bottom: 0px;
+              width: 2.5rem;
+              height: 2.5rem;
+              line-height: 2.5rem;
+              color: #fff;
+          }
+          #main {
+              -webkit-box-flex: 1;
+              /* -webkit-flex: 1; */
+              background-color: #fff;
+          }
+      </style>
+  </head>
+  <body>
+      <header id="header">
+          <div id="bikeclose" class="back event-back" tapmode onclick="api.closeWin({name:'winconfig'});"></div>
+          <h1 id="pagetitle"></h1>
+      </header>
+      <div id="main">
+      </div>
+  </body>
+  <script type="text/javascript" src="../script/api.js"></script>
+  <script type="text/javascript" src="../script/bike.js"></script>
+  <script type="text/javascript">
+      var smsVerify = null;
+      apiready = function(){
+          var pageParam = api.pageParam;
+          $api.text($api.byId('pagetitle'), pageParam.title);
+
+          var header = $api.byId('header');
+          var headerH = $api.offset(header).h;
+          var frameH = api.winHeight - headerH;
+          api.openFrame({
+              name: 'config',
+              url: 'config.html',
+              bounces: true,
+              rect: {
+                  x: 0,
+                  y: headerH,
+                  w: 'auto',
+                  h: frameH
+              },
+              vScrollBarEnabled: false,
+              softInputMode:'auto',
+              //pageParam: {
+              //    title: '工作'
+              //}
+          });
+      };
+  </script>
+  </html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+      <title>title</title>
+      <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+      <style>
+          body{
+              background-color: #fff;
+                font-size: 20px;
+          }
+          .rows{
+              width: 100%;
+              height: 76px;
+              /*border: solid 1px #ccc;*/
+          }
+          .rows:active{
+              background-color: #fafafa;
+          }
+          .rows .left{
+              width: 76px;
+              height: 76px;
+              float: left;
+          }
+          .rows .left .yuan{
+              width: 50px;
+              height: 50px;
+              border-radius:50%;
+              background-color: #3396fb;
+              text-align: center;
+              line-height: 56px;
+              font-size:.9rem;
+              color: #fff;
+              margin: 13px auto;
+          }
+          .rows .right{
+              width: 75%;
+              height: 62px;
+              line-height: 1.7rem;
+              font-size: 1.2rem;
+              padding-top: .8rem;
+              float: left;
+              border-bottom: solid 1px #fafafa;
+              text-align: left;
+          }
+          .rows .right .gangwei{
+              font-size: .8rem;
+              line-height: 20px;
+              color: #666;
+          }
+      </style>
+  </head>
+  <body>
+        <section id="txlcontent" style="width:92%; margin:8px auto;">
+            <script type="text/template" charset="utf-8" id="txllist">
+                {{if(it.length>0 ){ }}
+                    {{for(var i=0;i< it.length;i++) { }}
+                    <div class="rows" tapmode onclick="txldetail({{=it[i].uid }})">
+                        <div class="left">
+                            <div class="yuan">{{=it[i].name2 }}</div>
+                        </div>
+                        <div class="right">{{=it[i].name }}<br /><span class="gangwei">{{=it[i].bumen }} {{=it[i].gangwei }}</span></div>
+                    </div>
+                    {{ } }}
+                {{ }else{ }}
+                没有数据
+                {{ } }}
+            </script>
+            <!--<div class="rows">
+                <div class="left">
+                    <div class="yuan">aaa</div>
+                </div>
+                <div class="right">bbb<br /><span class="gangwei">ccc</span></div>
+            </div>
+            <div class="rows">
+                <div class="left">
+                    <div class="yuan">aaa</div>
+                </div>
+                <div class="right">bbb<br /><span class="gangwei">ccc</span></div>
+            </div>-->
+        </section>
+  </body>
+  <script type="text/javascript" src="../script/api.js"></script>
+  <script type="text/javascript" src="../script/bike.js"></script>
+  <script type="text/javascript" src="../script/doT.min.js"></script>
+  <script type="text/javascript">
+      apiready = function(){
+          api.showProgress({
+              title: '正在加载...',
+              //text: '先喝杯茶...',
+              modal: false
+          });
+          var apiurl = getConfigValue('apiurl')+"Gdxtapi/getUserLxr";
+          api.ajax({
+              url: apiurl,
+              method: 'post',
+              timeout: 5,
+              dataType: 'json',
+              returnAll: false,
+              data:{
+                  values: {
+                      apiuser:getConfigValue('apiuser'),
+                      apipass:getConfigValue('apipass'),
+                  }
+              }
+          }, function(ret, err) {
+              api.hideProgress();
+              if(ret) {
+                  //alert(JSON.stringify(ret));
+                  var doid=document.getElementById("txllist").innerHTML;
+                  document.getElementById("txlcontent").innerHTML=doT.template(doid)(ret);
+              } else {
+                  //无数据
+              }
+          });
+      };
+
+      function txldetail(uid)
+      {
+          api.openWin({
+              name: 'txldetail',
+              url: 'txl_detail.html',
+              bounces: false,
+              pageParam: {
+                 title: '通讯录',
+                 uid: uid
+              }
+          });
+      }
+  </script>
+  </html>

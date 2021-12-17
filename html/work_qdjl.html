@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style>
+        body {
+            font-size: 20px;
+        }
+
+        header {
+            background-color: #1bbc9b;
+        }
+
+        #main {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            background-color: #fff;
+        }
+
+        section {
+            background-color: #fff;
+        }
+
+        h1 {
+            height: 2.5rem;
+            line-height: 2.5rem;
+            color: #fff;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .back {
+            position: absolute;
+            left: 0px;
+            bottom: 0px;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: url(../image/header/back.png) center center no-repeat;
+            background-size: 25px auto;
+        }
+
+        .userinfo {
+            width: 96%;
+            height: 76px;
+            margin: 5px auto;
+            border-bottom: solid 1px #fafafa;
+        }
+
+        .userinfo .yyuan {
+            float: left;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #FFA500;
+            text-align: center;
+            line-height: 63px;
+            font-size: .8rem;
+            color: #fff;
+            margin: 7px auto;
+        }
+
+        .userinfo .name {
+            float: left;
+            font-size: 1.2rem;
+            line-height: 80px;
+            margin-left: 10px;
+        }
+
+        .remark {
+            width: 96%;
+            height: 50px;
+            margin: 5px auto;
+            color: #7d8082;
+            font-size: .9rem;
+            line-height: 50px;
+            text-align: center;
+        }
+
+        .kuang {
+            width: 98%;
+            overflow: hidden;
+            margin: 0px auto;
+            text-align: center;
+            border-top: solid #f0eff4 10px;
+            border-bottom: solid #f0eff4 10px;
+        }
+
+        .kuang .title {
+            font-size: 1rem;
+            line-height: 2rem;
+            height: 2rem;
+        }
+
+        .kuang .rows {
+            overflow: hidden;
+            border-bottom: solid #e0e0e0 1px;
+            padding: 5px 0;
+        }
+
+        .kuang .rows .left {
+            width: 80%;
+            float: left;
+            font-size: .7rem;
+            text-align: left;
+            padding-top: 4px;
+        }
+
+        .kuang .rows .right {
+            width: 19%;
+            float: right;
+            font-size: 1rem;
+        }
+
+        .kuang .rows .right .inputc {
+            width: 20px;
+            height: 20px;
+        }
+
+        .kuang .rows .left .inputt {
+            display: inline;
+            border: solid 1px #ccc;
+        }
+
+        .aui-btn {
+            font-size: 1rem;
+            height: 2rem;
+            line-height: 2rem;
+            min-width: 5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <div id="bikeclose" class="back event-back" tapmode onclick="api.closeWin({name:'qdjl'});"></div>
+        <h1 id="pagetitle"></h1>
+    </header>
+    <div id="main">
+    </div>
+
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/bike.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var pageParam = api.pageParam;
+        $api.text($api.byId('pagetitle'), pageParam.title);
+
+        // var header = $api.byId('header');
+        // var headerH = $api.offset(header).h;
+        // var frameH = api.winHeight - headerH;
+        // api.openFrame({
+        //     name: 'reportweekly_list',
+        //     url: 'work_reportweekly_list.html',
+        //     bounces: false,
+        //     rect: {
+        //         x: 0,
+        //         y: headerH,
+        //         w: 'auto',
+        //         h: frameH
+        //     },
+        //     vScrollBarEnabled: false,
+        //     //pageParam: {
+        //     //    title: '工作'
+        //     //}
+        // });
+
+
+    };
+</script>
+
+</html>

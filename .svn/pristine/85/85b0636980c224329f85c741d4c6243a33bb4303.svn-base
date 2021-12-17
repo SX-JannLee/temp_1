@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<security>
+<item name="appname" value="绩效考核管理" />
+<item name="apiurl" value="http://gdsxxtapi.sxtzy.net:889/index/" />
+<item name="apiuser" value="bikeo1" />
+<item name="apipass" value="ebfd5207d7c3f89830f545abe5ec6ce6" />
+</security>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+        body {
+            font-size: 20px;
+            background-color: #fff;
+        }
+        #mytablelist td{
+        	border:solid 1px #ccc;
+        	font-size:.65rem;
+        	line-height:1.5rem;
+        	padding:0px;
+        	height:1.5rem;
+        }
+
+    </style>
+</head>
+
+<body>
+    <section id="txlcontent" style="margin:10px 2px;">
+
+        <table id="mytablelist" width="100%" border="0" cellspacing="1" cellpadding="0">
+          <tr>
+            <td align="center">时间</td>
+            <td align="center">IP</td>
+            <td align="center">位置</td>
+          </tr>
+          <script type="text/template" charset="utf-8" id="txllist">
+          {{if(it.length>0 ){ }}
+              {{for(var i=0;i< it.length;i++) { }}
+          <tr>
+            <td align="center">{{=it[i].addtime }}</td>
+            <td align="center">{{=it[i].ip }}</td>
+            <td align="center">{{=it[i].area }}</td>
+          </tr>
+              {{ } }}
+          {{ }else{ }}
+          没有数据
+          {{ } }}
+         </script>
+
+        </table>
+
+    </section>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/bike.js"></script>
+<script type="text/javascript" src="../script/doT.min.js"></script>
+<script type="text/javascript">
+    apiready = function() {
+        var userinfo = $api.getStorage('userinfo');
+        if(typeof userinfo != "undefined" && userinfo.uid){
+            UID = userinfo.uid;
+        }
+
+        // //下拉刷新
+        // api.setRefreshHeaderInfo({
+        //     visible: true,
+        //     loadingImg: 'widget://image/refresh.png',
+        //     bgColor: '#f0f0f0',
+        //     textColor: '#888',
+        //     textDown: '下拉刷新...',
+        //     textUp: '松开刷新...',
+        //     showTime: true
+        // }, function(ret, err) {
+        //     api.refreshHeaderLoadDone();
+        //     ajaxList(progress, true);
+        // });
+
+        ajaxList(progress, isPull);
+        fnInitPushRefresh();
+    };
+
+    var dataLoading = false,
+    isEmpty = false,
+    skip = 0,
+    LIMIT = 20,
+    progress = true,
+    isPull = true,
+    UID = 0;
+
+    // 上拉加载更多
+    function fnInitPushRefresh() {
+
+      api.addEventListener({
+        name: 'scrolltobottom',
+        extra: {
+          threshold: 0
+        }
+      }, function(ret, err) {
+        ajaxList(progress, false);
+      });
+    };
+
+    // 获取信息
+    function ajaxList(progress, isPull) {
+      if (dataLoading) {
+        return;
+      }
+      dataLoading = true;
+
+      if (isPull) {
+        skip = 0;
+        isEmpty = false;
+      }
+
+      if (isEmpty) {
+        api.toast({
+          msg: '没有更多了',
+          duration: 2000,
+          location: 'bottom'
+        });
+        dataLoading = false;
+        return;
+      }
+      if (progress) {
+        api.showProgress({
+          title: '加载中',
+          modal: false
+        });
+      }
+    //   var client = new Resource("A6918573369588", "20C93719-0DE5-8C9B-2F05-36D9BB835C02");
+    //   var Headlist = client.Factory("headlist");
+    //   fnChangeMessage();
+    //   Headlist.query({
+    //     "filter": {
+    //       "include": ["photoNews", "videoPointer", "fromPointer"],
+    //       "where": {
+    //         "type": typeNum
+    //       },
+    //       "skip": skip,
+    //       "limit": LIMIT
+    //     }
+    //   }
+      var apipath = $api.getStorage('apipath');
+      var apiurl = apipath+"/Xjxtapi/getMyloginlog";
+      api.ajax({
+          url: apiurl,
+          method: 'post',
+          timeout: 5,
+          dataType: 'json',
+          returnAll: false,
+          data:{
+              values: {
+                  apiuser:getConfigValue('apiuser'),
+                  apipass:getConfigValue('apipass'),
+                  uid:UID,
+                  skip:skip,
+                  limit:LIMIT
+              }
+          }
+      }, function(ret, err) {
+
+        api.hideProgress();
+        api.refreshHeaderLoadDone();
+        dataLoading = false;
+        //fnCacheImage(ret, 0);
+        if (!ret) {
+          api.toast({
+            msg: '网络不给力',
+            duration: 2000,
+            location: 'bottom'
+          });
+          return;
+        }
+
+        //alert(JSON.stringify(ret));
+
+        skip = skip+LIMIT;
+        //alert(skip+'_'+LIMIT);
+        if (ret.length < LIMIT) {
+          isEmpty = true;
+        }
+
+        if (ret.length == 0) {
+          return;
+        }
+        if (isPull) {
+          //headlist.innerHTML = dot(ret);
+          var doid=document.getElementById("txllist").innerHTML;
+          document.getElementById("mytablelist").innerHTML+=doT.template(doid)(ret);
+        } else {
+          //headlist.innerHTML += dot(ret);
+          var doid=document.getElementById("txllist").innerHTML;
+          document.getElementById("mytablelist").innerHTML+=doT.template(doid)(ret);
+        }
+      })
+    }
+</script>
+
+</html>

@@ -1,0 +1,17 @@
+body {
+  background-color: #fff;
+}
+
+.aui-bar-tab .bike-bar-tab-img {
+    display: block;
+    height: 1.5rem;
+    font-size: 0.6rem;
+    position: relative;
+    text-align: center;
+}
+.aui-bar-tab .bike-bar-tab-img .bike-bar-tab-img-icon{
+    display: block;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 1px auto;
+}
